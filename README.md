@@ -182,3 +182,7 @@ Igual que antes, deja **Server group** en `Servers` y pulsa **Save & Connect**.
 Si todo va bien, la conexión aparece en **Connections → Servers** con un punto verde y el árbol desplegable: **Databases**, **System Databases**, **Roles** y **Tablespaces**. Desde ahí puedes explorar la base de datos o abrir un editor SQL (click derecho sobre la conexión → **New Query**) para lanzar consultas.
 
 ![Conexión establecida en el panel Connections de VS Code](.img/vscode-06-conectado.png)
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](LICENSE).
