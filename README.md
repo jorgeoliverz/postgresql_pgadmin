@@ -80,3 +80,53 @@ O con un cliente `psql` instalado en tu máquina:
 ```bash
 psql -h localhost -p 5432 -U postgres -d postgres
 ```
+
+---
+
+## Guía paso a paso para conectarse a la base de datos (con capturas)
+
+Esta sección repite todo el proceso de conexión a la base de datos, con más detalle y con capturas de pantalla. Las imagenes se encuentran en `./.img/`.
+
+### Desde pgAdmin
+
+#### 1. Iniciar sesión en pgAdmin
+
+Abre http://localhost:5050 en el navegador. Aparece la pantalla de login de pgAdmin: introduce el email y la contraseña definidos en `PGADMIN_DEFAULT_EMAIL` y `PGADMIN_DEFAULT_PASSWORD` del `.env` (por defecto `admin@admin.com` / `admin`) y pulsa **Login**.
+
+![Página de inicio de sesión de pgAdmin](.img/pgadmin-01-login.png)
+
+#### 2. Registrar un nuevo servidor
+
+Una vez dentro, en el panel izquierdo (**Object Explorer**) haz click derecho sobre **Servers** y elige **Register → Server...**. También puedes usar el acceso directo **Add New Server** del Dashboard.
+
+![Menú contextual Register → Server](.img/pgadmin-02-register-server.png)
+
+#### 3. Pestaña General
+
+En la pestaña **General** solo hace falta rellenar **Name** con el nombre que quieras darle a la conexión (en el ejemplo, `bbdd_pruebas`). Es solo una etiqueta para identificar el servidor dentro de pgAdmin; el resto de campos se pueden dejar como están.
+
+![Pestaña General del formulario Register - Server](.img/pgadmin-03-general.png)
+
+#### 4. Pestaña Connection
+
+En la pestaña **Connection** se indican los datos reales de conexión a PostgreSQL:
+
+| Campo                    | Valor                                                                 |
+| ------------------------ | --------------------------------------------------------------------- |
+| **Host name/address**    | `postgres` (nombre del servicio en `compose.yaml`, **no** `localhost`) |
+| **Port**                 | `5432`                                                                |
+| **Maintenance database** | valor de `POSTGRES_DB` (por defecto `postgres`)                       |
+| **Username**             | valor de `POSTGRES_USER` (por defecto `postgres`)                     |
+| **Password**             | valor de `POSTGRES_PASSWORD` (por defecto `postgres`)                 |
+
+Activa **Save password?** para no tener que volver a escribir la contraseña cada vez que abras pgAdmin. Pulsa **Save**.
+
+> **¿Por qué `postgres` y no `localhost`?** pgAdmin corre dentro de su propio contenedor, en la misma red de Docker que la base de datos. Desde ahí, `localhost` sería el propio contenedor de pgAdmin, no PostgreSQL. Docker Compose resuelve el nombre del servicio (`postgres`) a la IP del contenedor correcto.
+
+![Pestaña Connection del formulario Register - Server](.img/pgadmin-04-connection.png)
+
+#### 5. Conexión completada
+
+Si los datos son correctos, el servidor aparece en el **Object Explorer** con la base de datos desplegable: `Servers → bbdd_pruebas → Databases → postgres → Schemas → public`. Desde ahí puedes abrir el **Query Tool** (click derecho sobre la base de datos → **Query Tool**, o el icono de la barra superior) para lanzar consultas SQL.
+
+![Conexión ya completada con la base de datos](.img/pgadmin-05-conectado.png)
