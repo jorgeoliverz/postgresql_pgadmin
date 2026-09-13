@@ -130,3 +130,55 @@ Activa **Save password?** para no tener que volver a escribir la contraseña cad
 Si los datos son correctos, el servidor aparece en el **Object Explorer** con la base de datos desplegable: `Servers → bbdd_pruebas → Databases → postgres → Schemas → public`. Desde ahí puedes abrir el **Query Tool** (click derecho sobre la base de datos → **Query Tool**, o el icono de la barra superior) para lanzar consultas SQL.
 
 ![Conexión ya completada con la base de datos](.img/pgadmin-05-conectado.png)
+
+### Desde VS Code
+
+#### 1. Instalar la extensión y abrir el panel PostgreSQL
+
+Instala la extensión **PostgreSQL** de Microsoft (`ms-ossdata.vscode-pgsql`) desde el marketplace de VS Code. Una vez instalada aparece un icono de elefante en la barra lateral; al pulsarlo se abre el panel **PostgreSQL** con la sección **Connections**. Pulsa **+ Add Connection** para crear una conexión nueva.
+
+![Panel PostgreSQL de VS Code con el botón Add Connection](.img/vscode-01-panel-postgresql.png)
+
+#### 2. Rellenar la conexión (pestaña Parameters)
+
+Se abre el formulario **Connect to PostgreSQL Server**. En la pestaña **Parameters** rellena los campos con los valores del `.env`:
+
+| Campo                   | Valor                                                                 |
+| ----------------------- | --------------------------------------------------------------------- |
+| **Server name**         | `localhost` (aquí sí, porque te conectas desde tu máquina al puerto publicado) |
+| **Authentication type** | `Password`                                                            |
+| **User name**           | valor de `POSTGRES_USER` (por defecto `postgres`)                     |
+| **Password**            | valor de `POSTGRES_PASSWORD` (por defecto `postgres`)                 |
+| **Save password**       | marcado, para no tener que escribirla cada vez                        |
+| **Database name**       | valor de `POSTGRES_DB` (por defecto `postgres`)                       |
+| **Connection name**     | opcional; un nombre para identificar la conexión en el panel          |
+
+> **¿Por qué aquí `localhost` y en pgAdmin `postgres`?** VS Code corre en tu máquina, fuera de Docker, así que llega a PostgreSQL a través del puerto `5432` que Compose publica en `localhost`. pgAdmin, en cambio, corre dentro de un contenedor y usa el nombre del servicio de la red de Docker.
+
+![Formulario de conexión, pestaña Parameters](.img/vscode-02-parameters.png)
+
+Al final del formulario, deja **Server group** en `Servers` y pulsa **Save & Connect**. Si quieres comprobar los datos antes de guardar, usa **Test Connection**.
+
+![Botones Save & Connect y Test Connection](.img/vscode-03-parameters-save.png)
+
+#### 3. Alternativa: pestaña Connection String
+
+En lugar de rellenar los campos uno a uno, puedes usar la pestaña **Connection String** y pegar la cadena de conexión completa (sin la contraseña, la extensión la pide aparte):
+
+```
+postgresql://postgres@localhost:5432/postgres
+```
+
+Es decir, `postgresql://<POSTGRES_USER>@localhost:5432/<POSTGRES_DB>`. A la derecha, en **Connection details**, la extensión muestra cómo ha interpretado la cadena (server, usuario y base de datos). Después indica **Authentication type** `Password`, escribe la contraseña y marca **Save password**.
+
+![Formulario de conexión, pestaña Connection String](.img/vscode-04-connection-string.png)
+
+Igual que antes, deja **Server group** en `Servers` y pulsa **Save & Connect**.
+
+![Botones Save & Connect y Test Connection en la pestaña Connection String](.img/vscode-05-connection-string-save.png)
+
+#### 4. Conexión completada
+
+Si todo va bien, la conexión aparece en **Connections → Servers** con un punto verde y el árbol desplegable: **Databases**, **System Databases**, **Roles** y **Tablespaces**. Desde ahí puedes explorar la base de datos o abrir un editor SQL (click derecho sobre la conexión → **New Query**) para lanzar consultas.
+
+![Conexión establecida en el panel Connections de VS Code](.img/vscode-06-conectado.png)
