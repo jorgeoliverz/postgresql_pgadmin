@@ -94,3 +94,31 @@ SELECT empleados.nombre, departamentos.nombre
 FROM empleados
 INNER JOIN departamentos
 ON empleados.id = departamentos.empleados_id;
+
+SELECT
+comments.body,
+posts.title,
+users.first_name,
+users.last_name
+FROM comments
+INNER JOIN posts ON posts.id = comments.post_id
+INNER JOIN users ON users.id = comments.user_id;
+
+SELECT title, user_id
+FROM posts
+WHERE user_id = (
+SELECT id FROM users WHERE first_name =
+'Ada'
+);
+
+SELECT first_name
+FROM users
+WHERE id IN (
+SELECT user_id FROM comments
+);
+
+SELECT first_name
+FROM users
+WHERE id NOT IN (
+SELECT user_id FROM posts
+);
