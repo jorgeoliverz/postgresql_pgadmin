@@ -86,3 +86,57 @@ FROM libros;
 SELECT titulo,
     COALESCE(genero, 'Sin género') AS genero
 FROM libros;
+
+-- Practica 9
+
+SELECT titulo, valoracion
+FROM libros
+ORDER BY valoracion DESC;
+
+SELECT titulo, disponible, valoracion
+FROM libros
+ORDER BY disponible DESC, valoracion ASC;
+
+SELECT titulo,
+    valoracion + 1 AS valoracion_masuno
+FROM libros;
+
+SELECT titulo,
+    ROUND(valoracion,0) AS val_redondeo
+FROM libros;
+
+SELECT 
+    COUNT(*) AS total_libros,
+    AVG(valoracion) AS valoracion_promedio,
+    MAX(valoracion) AS valoracion_maxima,
+    MIN(valoracion) AS valoracion_minima
+FROM libros;
+
+-- Practica 10
+
+SELECT genero, COUNT(*) AS cantidad_libros
+FROM libros
+GROUP BY genero;
+
+SELECT genero, AVG(valoracion) AS valoracion_promedio
+FROM libros
+GROUP BY genero;
+
+SELECT disponible, MAX (valoracion) AS valoracion_maxima, MIN(valoracion) AS valoracion_minima
+FROM libros
+GROUP BY disponible;
+
+-- Practica 11
+
+SELECT genero, COUNT(*) AS cantidad_libros
+FROM libros
+GROUP BY genero
+HAVING COUNT(*) > 1;
+
+SELECT genero, COUNT(*) AS cantidad_libros
+FROM libros
+WHERE valoracion > 5.0
+GROUP BY genero
+HAVING COUNT(*) > 1;
+
+
